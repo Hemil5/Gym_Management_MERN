@@ -85,9 +85,9 @@ const MemberDetail = () => {
             });
     }
 
-    return (
+    return ( 
         <div className='w-3/4 text-black p-3'>
-            <div onClick={() => { navigate(-1) }} className='border-2 w-fit text-xl font-sans text-white p-2 rounded-xl bg-slate-900 cursor-pointer'>
+            <div onClick={() => { navigate(-1) }} className='border-2 w-fit text-xl font-sans text-white p-2 rounded-xl bg-slate-900 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 cursor-pointer'>
                 <ArrowBackIcon /> Go Back
             </div>
             <div className='mt-10 p-2'>

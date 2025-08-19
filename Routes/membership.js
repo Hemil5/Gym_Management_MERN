@@ -4,4 +4,5 @@ import auth from '../Auth/auth.js'
 export const router = express.Router();
 
 router.post('/add-membership',auth,MembershipController.addMembership)
+router.post('/delete-membership',auth,MembershipController.deleteMembership)
 router.get('/get-membership',auth,MembershipController.getmembership)
