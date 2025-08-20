@@ -80,13 +80,28 @@ export const registerMember = async (req, res) => {
 export const searchMember = async (req, res) => {
   try {
     const { searchTerm } = req.query;
-    const member = await Member.find({
-      gym: req.gym._id,
-      $or: [{ name: { $regex: '^' + searchTerm, $options: 'i' } },
-      {
-        mobileNo: { $regex: '^' + searchTerm, $options: 'i' }
-      }]
-    });
+    var member;
+    if (Number(searchTerm)) {
+      member = await Member.find({
+        gym: req.gym._id,
+        mobileNo: { $regex: '^' + searchTerm }
+      });
+      // console.log(member)
+    }
+    else {
+      member = await Member.find({
+        gym: req.gym._id,
+        name: { $regex: '^' + searchTerm, $options: 'i' }
+      });
+      // console.log(member)
+    }
+    // const member = await Member.find({
+    //   gym: req.gym._id,
+    //   $or: [{ name: { $regex: '^' + searchTerm, $options: 'i' } },
+    //   {
+    //     mobileNo: { $regex: '^' + Number(searchTerm) }
+    //   }]
+    // });
 
     res.status(200).json({
       message: member.length ? "Fetched Members Successfully" : "No Such Member Registered yet",
@@ -96,7 +111,7 @@ export const searchMember = async (req, res) => {
 
 
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -113,9 +128,9 @@ export const monthlyMember = async (req, res) => {
       createdAt: {
         $gte: startOfMonth,
         $lte: endOfMonth,
-      }, 
+      },
     }).sort({ createdAt: -1 });
- 
+
     res.status(200).json({
       message: member.length ? "Fetched Members Successfully" : "No Such Member Registered yet",
       members: member,
@@ -230,7 +245,7 @@ export const getMemberDetails = async (req, res) => {
     const member = await Member.findOne({ _id: id, gym: req.gym._id });
 
     if (!member) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         error: "No Such Member"
       });
     }
@@ -252,7 +267,7 @@ export const changeStatus = async (req, res) => {
     const member = await Member.findOne({ _id: id, gym: req.gym._id });
 
     if (!member) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         error: "No Such Member"
       });
     }

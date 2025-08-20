@@ -13,7 +13,7 @@ router.get('/within-4-7-expiring', auth, MemberController.expiringWithIn4To7Days
 router.get('/expired-member', auth, MemberController.expiredMember)
 router.get('/inactive-member', auth, MemberController.inActiveMember)
  
-
+ 
 
 router.get('/get-member/:id', auth, MemberController.getMemberDetails)
 router.post('/change-status/:id', auth, MemberController.changeStatus)

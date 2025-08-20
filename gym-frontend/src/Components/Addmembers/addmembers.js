@@ -43,12 +43,11 @@ const Addmembers = ({ handleClose }) => {
 
   const fetchMembership = async () => {
     await axios.get('http://localhost:4000/plans/get-membership', { withCredentials: true }).then((response) => {
-      console.log(response.data.memberShip)
+      // console.log(response.data.memberShip)
       if (response.data.memberShip.length === 0) {
         setTimeout(() => {
-          // Close or reset the form if no memberships are available
           handleClose();
-        }, 3000)
+        }, 1000)
         return toast.error("No any Membership added yet", {
           className: "text-lg"
         });
@@ -74,7 +73,7 @@ const Addmembers = ({ handleClose }) => {
   }, [])
 
   const handleOnChangeSelect = (event) => {
-    let value = event.target.value;
+    let value = event.target.value; 
     setInputField({ ...inputField, membership: value })
 
   };
@@ -82,7 +81,7 @@ const Addmembers = ({ handleClose }) => {
   const handleRegisterButton = async () => {
     await axios.post('http://localhost:4000/members/register-member', inputField, { withCredentials: true })
       .then((res) => {
-        toast.success("Added Successfully",{autoClose:1500});
+        toast.success("Added Successfully",{autoClose:500});
         setTimeout(() => {
           window.location.reload();
         }, 2000);

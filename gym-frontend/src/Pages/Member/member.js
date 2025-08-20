@@ -112,7 +112,7 @@ const Member = () => {
             setIsSearchModeOn(true)
             await axios.get(`http://localhost:4000/members/searched-members?searchTerm=${search}`, { withCredentials: true })
                 .then((response) => {
-                    // console.log(response);
+                    console.log(response);
                     setData(response.data.members);
                     setTotalData(response.data.totalMembers)
                     setSearch("")
