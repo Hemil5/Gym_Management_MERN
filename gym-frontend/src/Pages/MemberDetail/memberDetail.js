@@ -59,7 +59,7 @@ const MemberDetail = () => {
             .then((res) => {
                 // toast.success("Status Changed");
             })
-            .catch((err) => { 
+            .catch((err) => {
                 toast.error("Status not Updated");
                 console.log(err);
             });
@@ -90,6 +90,19 @@ const MemberDetail = () => {
             });
     }
 
+    const handleDeleteMember = async () => {
+        try {
+            await axios.delete(`http://localhost:4000/members/delete-member/${id}`, {
+                withCredentials: true
+            });
+            toast.success("Member deleted successfully!");
+            navigate(-1);
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to delete member.");
+        }
+    };
+
     return (
         <div className='w-3/4 text-black p-3'>
             <div onClick={() => { navigate(-1) }} className='border-2 w-fit text-xl font-sans text-white p-2 rounded-xl bg-slate-900 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 cursor-pointer'>
@@ -97,7 +110,7 @@ const MemberDetail = () => {
             </div>
             <div className='mt-10 p-2'>
                 <div className=' h-[60%] flex'>
-                    <div className='w-1/3  mx-auto'> 
+                    <div className='w-1/3  mx-auto'>
                         <img src={data?.profilePic} className='w-full  mx-auto' />
                     </div>
                     <div className='w-2/3 relative bottom-14 text-xl p-2'>
@@ -143,10 +156,18 @@ const MemberDetail = () => {
                                 className="mt-3 rounded-lg p-3 border-2 border-slate-900 text-center w-full md:w-1/2 cursor-pointer hover:text-white hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
                                 Edit Member
                             </div>
+
                         }
+                        {showEditModal && <EditMemberDetail setShowEditModal={setShowEditModal} id={id} />}
 
-                        {showEditModal && <EditMemberDetail setShowEditModal={setShowEditModal} id={id}/>}
+                        {!renew &&
+                            <div
+                                onClick={() => handleDeleteMember()}
+                                className="mt-3 rounded-lg p-3 border-2 border-slate-900 text-center w-full md:w-1/2 cursor-pointer hover:text-white hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+                                Delete Member
+                            </div>
 
+                        }
 
 
                     </div>

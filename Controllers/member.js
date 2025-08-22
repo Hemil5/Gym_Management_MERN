@@ -337,7 +337,7 @@ export const updateMemberDetails = async (req, res) => {
     oldMember.mobileNo = mobileNo
     oldMember.address = address
     if(profilePic){
-      oldMember.profilePic = profilePic
+      oldMember.profilePic = profilePic 
     }
 
     await oldMember.save()
@@ -346,5 +346,16 @@ export const updateMemberDetails = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: 'All fields must be filled' });
+  }
+}
+
+export const deleteMember = async(req,res) =>{
+  try{
+    const { id } = req.params
+    const member = await Member.findByIdAndDelete(id)
+    return res.status(200).json({message:"Member Deleted Successfully",member})
+  }catch(err){
+    console.log(err);
+    res.status(500).json({ error: 'Server Error' });
   }
 }

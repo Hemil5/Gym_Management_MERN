@@ -15,6 +15,7 @@ router.get('/inactive-member', auth, MemberController.inActiveMember)
  
  
 
+router.delete('/delete-member/:id', auth, MemberController.deleteMember);
 router.put('/update-member-details/:id', auth, MemberController.updateMemberDetails)
 router.get('/get-member/:id', auth, MemberController.getMemberDetails)
 router.post('/change-status/:id', auth, MemberController.changeStatus)
