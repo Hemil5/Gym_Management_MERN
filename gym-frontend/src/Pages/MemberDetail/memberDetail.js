@@ -4,6 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Switch from 'react-switch';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import EditMemberDetail from './editMemberDetail';
+
 const MemberDetail = () => {
     const [status, setStatus] = useState("Pending");
     const [renew, setRenew] = useState(false);
@@ -12,6 +14,9 @@ const MemberDetail = () => {
     const navigate = useNavigate();
     const [planMember, setPlanMember] = useState("");
     const { id } = useParams();
+
+    const [showEditModal, setShowEditModal] = useState(false);
+
 
     useEffect(() => {
         fetchData();
@@ -54,7 +59,7 @@ const MemberDetail = () => {
             .then((res) => {
                 // toast.success("Status Changed");
             })
-            .catch((err) => {
+            .catch((err) => { 
                 toast.error("Status not Updated");
                 console.log(err);
             });
@@ -85,14 +90,14 @@ const MemberDetail = () => {
             });
     }
 
-    return ( 
+    return (
         <div className='w-3/4 text-black p-3'>
             <div onClick={() => { navigate(-1) }} className='border-2 w-fit text-xl font-sans text-white p-2 rounded-xl bg-slate-900 hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 cursor-pointer'>
                 <ArrowBackIcon /> Go Back
             </div>
             <div className='mt-10 p-2'>
                 <div className=' h-[60%] flex'>
-                    <div className='w-1/3  mx-auto'>
+                    <div className='w-1/3  mx-auto'> 
                         <img src={data?.profilePic} className='w-full  mx-auto' />
                     </div>
                     <div className='w-2/3 relative bottom-14 text-xl p-2'>
@@ -111,27 +116,38 @@ const MemberDetail = () => {
 
                         {isDateInPast(data?.nextBillDate) && <div onClick={() => { setRenew(prev => !prev) }} className={`mt-1 rounded-lg p-3 border-2 border-slate-900 text-center ${renew && status === "Active" ? 'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white' : null}  w-full md:w-1/2 cursor-pointer hover:text-white hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500`}>Renew</div>}
 
-                        {isDateInPast(data?.nextBillDate) && 
+                        {isDateInPast(data?.nextBillDate) &&
                             renew && status === "Active" ? (
-                                <div className="rounded-lg p-2 mt-5 h-fit bg-slate-50 w-[100%]">
-                                    <div className="w-full">
-                                        <div className="fixed w-[45%] bottom-15">
-                                            <div>Membership</div>
+                            <div className="rounded-lg p-2 mt-5 h-fit bg-slate-50 w-[100%]">
+                                <div className="w-full">
+                                    <div className="fixed w-[45%] bottom-15">
+                                        <div>Membership</div>
 
-                                            <select value={planMember} onChange={handleOnChangeSelect} className="w-full border-2 p-2 rounded-lg">
-                                                {membership.map((item, index) => {
-                                                    return (
-                                                        <option value={item?._id}>{item?.months} Months Membership </option>
-                                                    )
-                                                })}
-                                            </select>
+                                        <select value={planMember} onChange={handleOnChangeSelect} className="w-full border-2 p-2 rounded-lg">
+                                            {membership.map((item, index) => {
+                                                return (
+                                                    <option value={item?._id}>{item?.months} Months Membership </option>
+                                                )
+                                            })}
+                                        </select>
 
-                                            <div onClick={handleRenewSaveBtn} className="mt-3 rounded-lg p-3 border-2 border-slate-900 text-center w-1/2 cursor-pointer hover:text-white hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">Save</div>
-                                        </div>
+                                        <div onClick={handleRenewSaveBtn} className="mt-3 rounded-lg p-3 border-2 border-slate-900 text-center w-1/2 cursor-pointer hover:text-white hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">Save</div>
                                     </div>
                                 </div>
-                            ) : null
+                            </div>
+                        ) : null
                         }
+                        {!renew &&
+                            <div
+                                onClick={() => setShowEditModal(!showEditModal)}
+                                className="mt-3 rounded-lg p-3 border-2 border-slate-900 text-center w-full md:w-1/2 cursor-pointer hover:text-white hover:bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+                                Edit Member
+                            </div>
+                        }
+
+                        {showEditModal && <EditMemberDetail setShowEditModal={setShowEditModal} id={id}/>}
+
+
 
                     </div>
                 </div>

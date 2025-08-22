@@ -9,22 +9,7 @@ import ReportIcon from '@mui/icons-material/Report';
 import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
-  const [accordianDashboard, setAccordianDashboard] = useState(false);
   const ref = useRef();
-
-  useEffect(()=>{ 
-
-    const checkIfClickedOutside = e => {
-      if (accordianDashboard && ref.current && !ref.current.contains(e.target)) {
-        setAccordianDashboard(false);
-      }
-    };
-
-    document.addEventListener("mousedown", checkIfClickedOutside);
-    return () => {
-      document.removeEventListener("mousedown", checkIfClickedOutside);
-    };
-},[accordianDashboard])
 
   const handleOnClickMenu = (value)=>{
     sessionStorage.setItem('func',value);
@@ -33,18 +18,7 @@ const Dashboard = () => {
   return (
     <div className='w-3/4 text-black p-5 relative'>
       <div className='w-full bg-slate-900 text-white rounded-lg flex  p-3 justify-between items-center'>
-        <MenuIcon sx={{ cursor: "pointer" }} onClick={() => { setAccordianDashboard(prev => !prev) }} />
-
-        <img className='w-8 h-8 rounded-3xl border-2' src='https://static.vecteezy.com/system/resources/previews/002/265/650/large_2x/unknown-person-user-icon-for-web-vector.jpg' alt='Image' />
-
       </div>
-
-      { 
-        accordianDashboard && <div ref={ref} className=' absolute p-3 bg-slate-900 text-white rounded-xl text-lg font-extralight'>
-          <div>Hi Welcome to our Gym Management System.</div>
-          <p>Feel free to ask any querries</p>
-        </div>
-      } 
 
       <div className='mt-5 pt-3 bg-slate-100 bg-opacity-50 grid gap-5 grid-cols-3 w-full pb-5 overflow-x-auto h-[80%]'> 
 

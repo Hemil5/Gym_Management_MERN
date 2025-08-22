@@ -43,7 +43,7 @@ const Addmembers = ({ handleClose }) => {
 
   const fetchMembership = async () => {
     await axios.get('http://localhost:4000/plans/get-membership', { withCredentials: true }).then((response) => {
-      // console.log(response.data.memberShip)
+      console.log(response.data.memberShip)
       if (response.data.memberShip.length === 0) {
         setTimeout(() => {
           handleClose();
@@ -57,8 +57,6 @@ const Addmembers = ({ handleClose }) => {
           ...inputField,
           membership: response.data.memberShip[0]._id, // Set the first membership
         });
-        // let first = response.data.memberShip[0]._id
-        // setInputField({ ...inputField, membership: first })
       }
       console.log(inputField)
     }).catch(err => {
@@ -67,13 +65,50 @@ const Addmembers = ({ handleClose }) => {
     })
   }
 
+  // useEffect(() => {
+  //   // console.log(inputField)
+  //   fetchMembership();
+  // }, [])
+
+
   useEffect(() => {
-    // console.log(inputField)
-    fetchMembership();
-  }, [])
+    let isMounted = true;
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/plans/get-membership', { withCredentials: true });
+        if (!isMounted) return;
+
+        if (response.data.memberShip.length === 0) {
+          toast.error("No any Membership added yet", {
+            className: "text-lg",
+            autoClose:1500 
+          });
+          setTimeout(() => {
+            handleClose();
+          }, 2000);
+        } else {
+          setMembershipList(response.data.memberShip);
+          setInputField(prev => ({
+            ...prev,
+            membership: response.data.memberShip[0]._id,
+          }));
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
 
   const handleOnChangeSelect = (event) => {
-    let value = event.target.value; 
+    let value = event.target.value;
     setInputField({ ...inputField, membership: value })
 
   };
@@ -81,7 +116,7 @@ const Addmembers = ({ handleClose }) => {
   const handleRegisterButton = async () => {
     await axios.post('http://localhost:4000/members/register-member', inputField, { withCredentials: true })
       .then((res) => {
-        toast.success("Added Successfully",{autoClose:500});
+        toast.success("Added Successfully", { autoClose: 500 });
         setTimeout(() => {
           window.location.reload();
         }, 2000);
@@ -97,13 +132,11 @@ const Addmembers = ({ handleClose }) => {
 
         <input value={inputField.name} onChange={(event) => { handleOnChange(event, "name") }} placeholder='Name of the Joinee' type='text' className='border-2 w-[90%] pl-3 pr-3 pt-2 pb-2 border-slate-400 rounded-md h-12' />
 
-        {/* Inserted Later */}
         <input value={inputField.mobileNo} onChange={(event) => { handleOnChange(event, "mobileNo") }} placeholder='Mobile No.' type='text' className='border-2 w-[90%] pl-3 pr-3 pt-2 pb-2 border-slate-400 rounded-md h-12' />
 
         <input value={inputField.address} onChange={(event) => { handleOnChange(event, "address") }} placeholder='Address' type='text' className='border-2 w-[90%] pl-3 pr-3 pt-2 pb-2 border-slate-400 rounded-md h-12' />
 
         <input value={inputField.joiningDate} onChange={(event) => { handleOnChange(event, "joiningDate") }} type='date' className='border-2 w-[90%] pl-3 pr-3 pt-2 pb-2 border-slate-400 rounded-md h-12' />
-        {/* Inserted Later */}
 
         <select onChange={handleOnChangeSelect} className='border-2 w-[90%] h-12 pt-2 pb-2 border-slate-400 rounded-md placeholder:text-gray'>
 
@@ -121,7 +154,7 @@ const Addmembers = ({ handleClose }) => {
         <input type='file' onChange={(e) => uploadImage(e)} />
 
 
-        <div className='w-[150px] h-[150px]:'>
+        <div className='w-[150px] h-[150px]'>
           <img src={inputField.profilePic} className='rounded-full' />
           {
             loaderImage && <Stack sx={{ width: '150px', color: 'grey.500' }} spacing={2}>

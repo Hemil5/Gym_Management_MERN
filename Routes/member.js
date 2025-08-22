@@ -15,6 +15,7 @@ router.get('/inactive-member', auth, MemberController.inActiveMember)
  
  
 
+router.put('/update-member-details/:id', auth, MemberController.updateMemberDetails)
 router.get('/get-member/:id', auth, MemberController.getMemberDetails)
 router.post('/change-status/:id', auth, MemberController.changeStatus)
-router.put('/update-member-plan/:id', auth, MemberController.updateMemberPlan) 
+router.put('/update-member-plan/:id', auth, MemberController.updateMemberPlan)

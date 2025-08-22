@@ -316,3 +316,35 @@ export const updateMemberPlan = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+
+export const updateMemberDetails = async (req, res) => {
+  try {
+
+    let { name, mobileNo, address,profilePic } = req.body;
+    let { id } = req.params
+    mobileNo = parseInt(mobileNo)
+    if (mobileNo < 1000000000 || mobileNo > 9999999999) {
+      return res.status(400).json({ error: "Mobile No. contain 10-digits" })
+    }
+
+    const member = await Member.findOne({ gym: req.gym._id, mobileNo});
+    if (member && member._id.toString() !== id) {
+      return res.status(409).json({ error: 'Already registered with this Mobile No' });
+    }
+
+    let oldMember = await Member.findOne({_id:id})
+    oldMember.name = name
+    oldMember.mobileNo = mobileNo
+    oldMember.address = address
+    if(profilePic){
+      oldMember.profilePic = profilePic
+    }
+
+    await oldMember.save()
+    res.status(200).json({ message: "Member Details updated Successfully", oldMember });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: 'All fields must be filled' });
+  }
+}

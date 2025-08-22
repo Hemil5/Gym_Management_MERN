@@ -7,7 +7,7 @@ const MemberCard = ({ item }) => {
             <div className='w-28 h-28 flex justify-center relative items-center border-2 p-1 mx-auto  rounded-full'> 
                 <img className='w-full h-full rounded-full' src={item?.profilePic} alt='Profile Pic' />
                 <CircleIcon className=' absolute top-0 left-0' sx={{ color: item?.status === "Active" ? "greenyellow" : "red" }} />
-            </div>
+            </div> 
   
             <div className="mx-auto mt-5 text-center text-xl font-semibold font-mono">
                 {item?.name}
