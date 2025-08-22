@@ -72,7 +72,7 @@ const Addmembers = ({ handleClose }) => {
 
 
   useEffect(() => {
-    let isMounted = true;
+    let isMounted = true; 
 
     const fetchData = async () => {
       try {
@@ -82,11 +82,11 @@ const Addmembers = ({ handleClose }) => {
         if (response.data.memberShip.length === 0) {
           toast.error("No any Membership added yet", {
             className: "text-lg",
-            autoClose:1500 
+            autoClose:1000 
           });
           setTimeout(() => {
             handleClose();
-          }, 2000);
+          }, 1000);
         } else {
           setMembershipList(response.data.memberShip);
           setInputField(prev => ({

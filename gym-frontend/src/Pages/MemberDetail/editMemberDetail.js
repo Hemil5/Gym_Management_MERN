@@ -48,11 +48,11 @@ const EditMemberDetail = ({ setShowEditModal, id }) => {
                 { withCredentials: true }
             )
                 .then((res) => {
-                    toast.success("Member Updated",{autoClose:2000});
+                    toast.success("Member Updated",{autoClose:1000});
                     setTimeout(()=>{
                         window.location.reload()
                         setShowEditModal(false)
-                    },2000)
+                    },1000)
                 })
                 .catch((err) => {
                     toast.error(err.response.data.error);
