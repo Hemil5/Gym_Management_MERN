@@ -20,6 +20,17 @@ const SignUp = () => {
         setInputField({ ...inputField, [name]: event.target.value })
     }
 
+    const handlePasswordBlur = () => {
+        const password = inputField.password;
+        const isValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
+        
+        if (!isValid) {
+            toast.error("Password must be at least 8 characters long and include uppercase, lowercase, special character and a number.");
+            setInputField({ ...inputField, ['password']: "" })
+        }
+    };
+
+
     const uploadImage = async (event) => {
         setImageLoader(true)
         // console.log("Image Uploading");
@@ -52,11 +63,11 @@ const SignUp = () => {
                 const successMsg = resp.data.message;
                 toast.success(successMsg);
             })
-            .catch((err) => { 
+            .catch((err) => {
                 const errorMessage = err.response.data.error;
                 toast.error(errorMessage);
             });
-        
+
         setInputField({ gymName: "", email: "", userName: "", password: "", profilePic: "https://th.bing.com/th/id/OIP.h4NU8Jb9tA2gJLi3veRj-wHaEl?rs=1&pid=ImgDetMain" })
     }
 
@@ -72,7 +83,7 @@ const SignUp = () => {
 
             <input type='text' value={inputField.userName} onChange={(event) => { handleOnchange(event, "userName") }} className='w-full mb-10 p-2 rounded-lg' placeholder='Enter UserName' />
 
-            <input type='password' value={inputField.password} onChange={(event) => { handleOnchange(event, "password") }} className='w-full mb-10 p-2 rounded-lg' placeholder='Enter password' />
+            <input type='password' value={inputField.password} onChange={(event) => { handleOnchange(event, "password") }} onBlur={handlePasswordBlur} className='w-full mb-10 p-2 rounded-lg' placeholder='Enter password' />
 
             <input type='file' onChange={(e) => { uploadImage(e) }} className='w-full mb-10 p-2 rounded-lg' />
             {
@@ -87,10 +98,10 @@ const SignUp = () => {
 
             <div className='p-2 w-[80%] mt-5 border-2 bg-slate-800 mx-auto rounded-lg text-white text-center text-lg hover:bg-white hover:text-black font-semibold cursor-pointer' onClick={() => handleClose()}>Forgot Password</div>
 
-            {forgotPassword && <Modal header="Forgot Password" handleClose={handleClose} content={<ForgotPassword handleClose={handleClose}/>} />}
+            {forgotPassword && <Modal header="Forgot Password" handleClose={handleClose} content={<ForgotPassword handleClose={handleClose} />} />}
             <ToastContainer />
         </div>
-    ) 
+    )
 }
 
 export default SignUp
